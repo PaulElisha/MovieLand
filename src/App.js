@@ -2,23 +2,26 @@ import { useState, useEffect } from 'react';
 import Card from './components/Card';
 import Search from './components/search.svg';
 
-
-const api = "http://www.omdbapi.com?apikey=b6003d8a";
-
 const App = () => {
+
+  const api = "http://www.omdbapi.com?apikey=b6003d8a";
 
   const [movies, setMovies] = useState([]);
   const [searchInput, setSearchInput] = useState('');
 
-  const searchMovies = async (title) => {
-    const response = await fetch(`${api}&s=${title}`);
+  const searchMovies = async (searchInput) => {
+    const response = await fetch(`${api}&s=${searchInput}`);
     const data = await response.json();
     setMovies(data.Search);
+  }
 
+  const changeEvent = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
   }
 
   useEffect(() => {
-    searchMovies(searchInput);
+    searchMovies('Merlin');
   }, [searchInput]);
 
   return (
@@ -30,7 +33,7 @@ const App = () => {
           <input
             placeholder='Search Movies'
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={changeEvent}
           />
           <img
             src={Search}
